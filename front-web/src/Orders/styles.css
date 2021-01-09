@@ -261,6 +261,8 @@
   transform: scale(1.01);
 }
 
+#mapid { height: 180px; }
+
 @media only screen and (max-width: 768px) {
   .orders-steps-content {
     display: flex;
