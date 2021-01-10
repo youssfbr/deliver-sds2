@@ -9,7 +9,6 @@ import OrderSummary from './OrderSummary';
 import { checkIsSelected } from './helpers';
 import './styles.css';
 
-
 function Orders() {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
@@ -21,7 +20,7 @@ function Orders() {
   useEffect(() => {
     fetchProducts()
     .then(response => setProducts(response.data))
-    .catch(error => {
+    .catch(() => {
       toast.warning('Erro ao listar produtos');
     })
   }, []);
@@ -47,10 +46,10 @@ function Orders() {
     saveOrder(payload)
       .then((response) => {
         toast.error(`Pedido enviado com sucesso! Nº ${response.data.id}`);
-        setSelectedProducts([]);
+        setSelectedProducts([]);        
       })
-      .catch(() => {
-        toast.warning('Erro ao enviar pedido');
+      .catch((error) => {
+        toast.warning(`Erro ao enviar o pedido: ${JSON.parse(error.request.response).message}`);
       })
   }
 
