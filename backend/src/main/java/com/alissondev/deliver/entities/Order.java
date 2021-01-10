@@ -13,6 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_order")
@@ -22,12 +25,19 @@ public class Order implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotBlank
 	private String address;
+	
+	@NotNull
 	private Double latitude;
+
+	@NotNull
 	private Double longitude;
 	private Instant moment;
 	private OrderStatus status;
 	
+	@NotEmpty(message = "Product cannot be empty.")
 	@ManyToMany
 	@JoinTable(name = "tb_order_product",
 		joinColumns = @JoinColumn(name = "order_id"),

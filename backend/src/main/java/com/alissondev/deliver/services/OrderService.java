@@ -15,6 +15,7 @@ import com.alissondev.deliver.entities.OrderStatus;
 import com.alissondev.deliver.entities.Product;
 import com.alissondev.deliver.repositories.OrderRepository;
 import com.alissondev.deliver.repositories.ProductRepository;
+import com.alissondev.deliver.services.exceptions.ResourceNotNull;
 
 @Service
 public class OrderService {
@@ -33,13 +34,19 @@ public class OrderService {
 	
 	@Transactional
 	public OrderDTO insert(OrderDTO dto) {
-		Order order = new Order(null, dto.getAddress(), dto.getLatitude(), dto.getLongitude(), Instant.now(), OrderStatus.PENDING);
+		Order order = new Order(null, dto.getAddress(), dto.getLatitude(), dto.getLongitude(), Instant.now(), OrderStatus.PENDING);		
 		for (ProductDTO p : dto.getProducts()) {
 			Product product = productRepository.getOne(p.getId());
 			order.getProducts().add(product);
+		}		
+		try {			
+			order = repository.save(order);			
+		} 
+		catch (javax.validation.ConstraintViolationException e) {
+			throw new ResourceNotNull("Selecione um ou mais produtos e digite a localização");
 		}
-		order = repository.save(order);
-		return new OrderDTO(order);
+		
+		return new OrderDTO(order);		
 	}
 	
 	@Transactional
@@ -49,5 +56,4 @@ public class OrderService {
 		order = repository.save(order);
 		return new OrderDTO(order);
 	}
-
 }
