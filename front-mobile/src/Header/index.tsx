@@ -1,14 +1,23 @@
-import { OpenSans_700Bold } from '@expo-google-fonts/open-sans';
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { OpenSans_700Bold } from '@expo-google-fonts/open-sans';
 import { Image, StyleSheet, Text, View } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
-export default function Header() {
+function Header() {
+  const navigation = useNavigation();
+
+  const handleOnPress = () => {
+    navigation.navigate('Home');
+  }
+ 
   return (
-    <View style={styles.container}>
-      <Image source={require('../assets/logo.png')} />
-      <Text style={styles.text}>Delivery</Text>
-      
-    </View>
+    <TouchableWithoutFeedback onPress={handleOnPress}>
+      <View style={styles.container}>
+        <Image source={require('../assets/logo.png')} />
+        <Text style={styles.text}>Delivery</Text>      
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -28,6 +37,7 @@ const styles = StyleSheet.create({
     color: '#FFF',
     marginLeft: 15,
     fontFamily: 'OpenSans_700Bold'
-
   }
 });
+
+export default Header;
